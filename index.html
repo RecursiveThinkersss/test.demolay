@@ -2,21 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Исправляем высоту на мобильных и запрещаем лишний зум -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Мы готовим что-то невероятное. Подпишись, чтобы узнать первым.">
+    <meta name="description" content="Мы готовим что-то секретное. Подпишись, чтобы узнать первым.">
     
-    <!-- Open Graph для соцсетей -->
-    <meta property="og:title" content="Скоро открытие проекта">
+    <meta property="og:title" content="Скоро открытие сайта">
     <meta property="og:description" content="Узнайте первым о запуске.">
     <meta property="og:image" content="https://via.placeholder.com/1200x630/05060f/7c3aed?text=Coming+Soon">
     
-    <title>Скоро открытие | Project X</title>
+    <title>Скоро открытие | ДеМоле России</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* ── Палитра (легко менять тему) ── */
             --bg-color: #05060f;
             --accent-primary: #7c3aed;
             --accent-secondary: #4f46e5;
@@ -30,7 +27,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            /* dvh учитывает адресную строку на мобильных */
             min-height: 100dvh; 
             display: flex;
             align-items: center;
@@ -39,19 +35,17 @@
             background: var(--bg-color);
             color: var(--text-main);
             overflow: hidden;
-            /* Улучшаем шрифты */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ── Фон ── */
         .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
         .aurora-blob {
             position: absolute;
             border-radius: 50%;
             opacity: 0.6;
-            filter: blur(80px); /* Чуть меньше блюр для производительности */
-            will-change: transform; /* Подсказка браузеру для GPU */
+            filter: blur(80px); 
+            will-change: transform; 
         }
         .a1 { background: radial-gradient(circle, #2e1065, #1e1b4b); width: 70vw; height: 70vw; top: -20%; left: -20%; animation: drift 25s infinite alternate; }
         .a2 { background: radial-gradient(circle, #0c4a6e, #064e3b); width: 60vw; height: 60vw; bottom: -10%; right: -10%; animation: drift 30s infinite alternate-reverse; }
@@ -60,21 +54,19 @@
         @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, -40px); } }
         @keyframes pulse { 0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.1); } }
 
-        /* Улучшенный шум через mix-blend-mode */
         .noise {
             position: fixed; inset: 0; z-index: 1; pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
             opacity: 0.07;
-            mix-blend-mode: overlay; /* Магия наложения */
+            mix-blend-mode: overlay;
         }
 
         canvas#pts { position: fixed; inset: 0; z-index: 2; }
 
-        /* ── Карточка ── */
         .card {
             position: relative; z-index: 10;
             width: min(480px, 90vw);
-            background: rgba(15, 23, 42, 0.4); /* Темнее подложка */
+            background: rgba(15, 23, 42, 0.4); 
             backdrop-filter: blur(24px) saturate(1.8);
             -webkit-backdrop-filter: blur(24px) saturate(1.8);
             border-radius: 24px;
@@ -83,10 +75,9 @@
             box-shadow: 
                 0 0 0 1px rgba(255,255,255,0.05) inset,
                 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: translateZ(0); /* Фикс для четкости текста в Safari */
+            transform: translateZ(0);
         }
 
-        /* Типографика и элементы */
         .badge {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 6px 12px;
@@ -110,7 +101,6 @@
         
         .desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 32px; }
 
-        /* Таймер с моноширинными цифрами */
         .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 32px; }
         .tc {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
@@ -118,11 +108,10 @@
         }
         .tn { 
             display: block; font-size: 1.5rem; font-weight: 700; color: #fff; 
-            font-variant-numeric: tabular-nums; /* Цифры не скачут по ширине */
+            font-variant-numeric: tabular-nums; 
         }
         .tl { font-size: 0.6rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
 
-        /* Форма */
         form { display: flex; gap: 10px; position: relative; }
         input[type=email] {
             flex: 1;
@@ -142,10 +131,8 @@
         }
         .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
         .btn:active { transform: translateY(0); }
-        /* Состояние загрузки кнопки */
         .btn.loading { opacity: 0.7; pointer-events: none; cursor: wait; }
 
-        /* Тост */
         .toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
             background: #0f172a; border: 1px solid #1e293b; color: #fff;
@@ -175,7 +162,7 @@
     <div class="badge"><div class="live-dot"></div>В разработке</div>
     
     <h1>Project <span id="typed"></span><span style="animation: blink-cursor 1s infinite; color: var(--accent-primary)">|</span></h1>
-    <p class="desc">Мы создаем инструмент нового поколения.<br>Оставь почту, чтобы получить ранний доступ.</p>
+    <p class="desc">Мы создаем простые решения.<br>Оставь почту, чтобы получить ранний доступ.</p>
 
     <div class="countdown">
         <div class="tc"><span class="tn" id="d">00</span><span class="tl">Дней</span></div>
@@ -184,9 +171,8 @@
         <div class="tc"><span class="tn" id="s">00</span><span class="tl">Сек</span></div>
     </div>
 
-    <!-- Используем тег form для обработки Enter и встроенной валидации -->
     <form id="subForm" onsubmit="handleSub(event)">
-        <input type="email" id="email" placeholder="hello@example.com" required aria-label="Ваш Email">
+        <input type="email" id="email" placeholder="hello@recursive.com" required aria-label="Ваш Email">
         <button type="submit" class="btn" id="subBtn">Жду</button>
     </form>
 </div>
@@ -197,15 +183,13 @@
 </div>
 
 <script>
-/* ── Печатная машинка ── */
 const words = ["Alpha", "Next", "Vision"];
 let i = 0, timer;
 
 function typeWriter() {
     const el = document.getElementById('typed');
     const word = words[i % words.length];
-    
-    // Эффект стирания и написания одной функцией
+
     let isDeleting = false;
     let txt = '';
     
@@ -220,7 +204,7 @@ function typeWriter() {
         let delta = isDeleting ? 50 : 100;
 
         if (!isDeleting && txt === word) {
-            delta = 2000; // Пауза перед стиранием
+            delta = 2000; 
             isDeleting = true;
         } else if (isDeleting && txt === '') {
             isDeleting = false;
@@ -233,9 +217,8 @@ function typeWriter() {
 }
 typeWriter();
 
-/* ── Таймер ── */
 const target = new Date();
-target.setDate(target.getDate() + 14); // Ставим дату +14 дней от сегодня для демо
+target.setDate(target.getDate() + 65); 
 
 function updateTimer() {
     const diff = target - new Date();
@@ -255,13 +238,11 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
-/* ── Форма ── */
 function handleSub(e) {
-    e.preventDefault(); // Останавливаем перезагрузку
+    e.preventDefault(); 
     const btn = document.getElementById('subBtn');
     const input = document.getElementById('email');
     
-    // Имитация загрузки
     btn.classList.add('loading');
     btn.innerText = '...';
     
@@ -273,19 +254,17 @@ function handleSub(e) {
         const t = document.getElementById('toast');
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 4000);
-        setTimeout(() => btn.innerText = 'Жду', 2000); // Вернуть текст кнопки
+        setTimeout(() => btn.innerText = 'Жду', 2000); 
     }, 1200);
 }
 
-/* ── Частицы (Canvas) с поддержкой TOUCH ── */
 const cvs = document.getElementById('pts');
 const ctx = cvs.getContext('2d');
 let w, h;
 const mouse = { x: -100, y: -100 }; // Убрали за экран по умолчанию
 
-// Обработка тачей для мобилок
 window.addEventListener('touchmove', e => {
-    // e.preventDefault(); // Можно раскомментировать, если нужно блокировать скролл
+     e.preventDefault(); 
     mouse.x = e.touches[0].clientX;
     mouse.y = e.touches[0].clientY;
 }, { passive: false });
@@ -311,11 +290,9 @@ function animate() {
     particles.forEach(p => {
         p.x += p.vx; p.y += p.vy;
         
-        // Отскок от краев
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
         
-        // Реакция на мышь/палец
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx*dx + dy*dy);
