@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Исправляем высоту на мобильных и запрещаем лишний зум -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Мы готовим что-то невероятное. Подпишись, чтобы узнать первым.">
+    
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:title" content="Скоро открытие проекта">
+    <meta property="og:description" content="Узнайте первым о запуске.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/05060f/7c3aed?text=Coming+Soon">
+    
+    <title>Скоро открытие | Project X</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* ── Палитра (легко менять тему) ── */
+            --bg-color: #05060f;
+            --accent-primary: #7c3aed;
+            --accent-secondary: #4f46e5;
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.42);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --transition-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* dvh учитывает адресную строку на мобильных */
+            min-height: 100dvh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            /* Улучшаем шрифты */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Фон ── */
+        .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(80px); /* Чуть меньше блюр для производительности */
+            will-change: transform; /* Подсказка браузеру для GPU */
+        }
+        .a1 { background: radial-gradient(circle, #2e1065, #1e1b4b); width: 70vw; height: 70vw; top: -20%; left: -20%; animation: drift 25s infinite alternate; }
+        .a2 { background: radial-gradient(circle, #0c4a6e, #064e3b); width: 60vw; height: 60vw; bottom: -10%; right: -10%; animation: drift 30s infinite alternate-reverse; }
+        .a3 { background: radial-gradient(circle, #4c1d95, #1e3a8a); width: 40vw; height: 40vw; top: 40%; left: 40%; transform: translate(-50%, -50%); animation: pulse 15s infinite; }
+
+        @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, -40px); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.1); } }
+
+        /* Улучшенный шум через mix-blend-mode */
+        .noise {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.07;
+            mix-blend-mode: overlay; /* Магия наложения */
+        }
+
+        canvas#pts { position: fixed; inset: 0; z-index: 2; }
+
+        /* ── Карточка ── */
+        .card {
+            position: relative; z-index: 10;
+            width: min(480px, 90vw);
+            background: rgba(15, 23, 42, 0.4); /* Темнее подложка */
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            padding: 48px 40px;
+            box-shadow: 
+                0 0 0 1px rgba(255,255,255,0.05) inset,
+                0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateZ(0); /* Фикс для четкости текста в Safari */
+        }
+
+        /* Типографика и элементы */
+        .badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 12px;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 99px;
+            font-size: 0.75rem; font-weight: 600; color: #a78bfa;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .live-dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 50%; box-shadow: 0 0 10px #7c3aed; animation: blink-dot 2s infinite; }
+        
+        h1 {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 800; margin-bottom: 12px;
+            line-height: 1.1; letter-spacing: -0.02em;
+            background: linear-gradient(to bottom right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 32px; }
+
+        /* Таймер с моноширинными цифрами */
+        .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 32px; }
+        .tc {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 12px 0; text-align: center;
+        }
+        .tn { 
+            display: block; font-size: 1.5rem; font-weight: 700; color: #fff; 
+            font-variant-numeric: tabular-nums; /* Цифры не скачут по ширине */
+        }
+        .tl { font-size: 0.6rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        /* Форма */
+        form { display: flex; gap: 10px; position: relative; }
+        input[type=email] {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 14px 16px;
+            color: #fff; font-size: 0.9rem; font-family: inherit;
+            transition: 0.2s;
+        }
+        input[type=email]:focus { outline: none; border-color: var(--accent-primary); background: rgba(124, 58, 237, 0.05); }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+            color: white; font-weight: 600; border: none; border-radius: 12px;
+            padding: 0 24px; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+        .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+        .btn:active { transform: translateY(0); }
+        /* Состояние загрузки кнопки */
+        .btn.loading { opacity: 0.7; pointer-events: none; cursor: wait; }
+
+        /* Тост */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #0f172a; border: 1px solid #1e293b; color: #fff;
+            padding: 12px 24px; border-radius: 99px; font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 8px; z-index: 100;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast svg { color: #4ade80; }
+
+        @keyframes blink-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes blink-cursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div class="aurora">
+    <div class="aurora-blob a1"></div>
+    <div class="aurora-blob a2"></div>
+    <div class="aurora-blob a3"></div>
+</div>
+<div class="noise"></div>
+<canvas id="pts"></canvas>
+
+<div class="card">
+    <div class="badge"><div class="live-dot"></div>В разработке</div>
+    
+    <h1>Project <span id="typed"></span><span style="animation: blink-cursor 1s infinite; color: var(--accent-primary)">|</span></h1>
+    <p class="desc">Мы создаем инструмент нового поколения.<br>Оставь почту, чтобы получить ранний доступ.</p>
+
+    <div class="countdown">
+        <div class="tc"><span class="tn" id="d">00</span><span class="tl">Дней</span></div>
+        <div class="tc"><span class="tn" id="h">00</span><span class="tl">Часов</span></div>
+        <div class="tc"><span class="tn" id="m">00</span><span class="tl">Мин</span></div>
+        <div class="tc"><span class="tn" id="s">00</span><span class="tl">Сек</span></div>
+    </div>
+
+    <!-- Используем тег form для обработки Enter и встроенной валидации -->
+    <form id="subForm" onsubmit="handleSub(event)">
+        <input type="email" id="email" placeholder="hello@example.com" required aria-label="Ваш Email">
+        <button type="submit" class="btn" id="subBtn">Жду</button>
+    </form>
+</div>
+
+<div class="toast" id="toast">
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span>Вы в списке! Скоро напишем.</span>
+</div>
+
+<script>
+/* ── Печатная машинка ── */
+const words = ["Alpha", "Next", "Vision"];
+let i = 0, timer;
+
+function typeWriter() {
+    const el = document.getElementById('typed');
+    const word = words[i % words.length];
+    
+    // Эффект стирания и написания одной функцией
+    let isDeleting = false;
+    let txt = '';
+    
+    function loop() {
+        if (isDeleting) {
+            txt = word.substring(0, txt.length - 1);
+        } else {
+            txt = word.substring(0, txt.length + 1);
+        }
+        el.innerHTML = txt;
+
+        let delta = isDeleting ? 50 : 100;
+
+        if (!isDeleting && txt === word) {
+            delta = 2000; // Пауза перед стиранием
+            isDeleting = true;
+        } else if (isDeleting && txt === '') {
+            isDeleting = false;
+            i++;
+            delta = 500;
+        }
+        timer = setTimeout(loop, delta);
+    }
+    loop();
+}
+typeWriter();
+
+/* ── Таймер ── */
+const target = new Date();
+target.setDate(target.getDate() + 14); // Ставим дату +14 дней от сегодня для демо
+
+function updateTimer() {
+    const diff = target - new Date();
+    if (diff <= 0) return;
+    
+    const parts = {
+        d: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        h: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        m: Math.floor((diff / (1000 * 60)) % 60),
+        s: Math.floor((diff / 1000) % 60)
+    };
+    
+    Object.keys(parts).forEach(key => {
+        document.getElementById(key).innerText = String(parts[key]).padStart(2, '0');
+    });
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+/* ── Форма ── */
+function handleSub(e) {
+    e.preventDefault(); // Останавливаем перезагрузку
+    const btn = document.getElementById('subBtn');
+    const input = document.getElementById('email');
+    
+    // Имитация загрузки
+    btn.classList.add('loading');
+    btn.innerText = '...';
+    
+    setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.innerText = 'Готово';
+        input.value = '';
+        
+        const t = document.getElementById('toast');
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 4000);
+        setTimeout(() => btn.innerText = 'Жду', 2000); // Вернуть текст кнопки
+    }, 1200);
+}
+
+/* ── Частицы (Canvas) с поддержкой TOUCH ── */
+const cvs = document.getElementById('pts');
+const ctx = cvs.getContext('2d');
+let w, h;
+const mouse = { x: -100, y: -100 }; // Убрали за экран по умолчанию
+
+// Обработка тачей для мобилок
+window.addEventListener('touchmove', e => {
+    // e.preventDefault(); // Можно раскомментировать, если нужно блокировать скролл
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+}, { passive: false });
+
+window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+function resize() { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * w, y: Math.random() * h,
+    vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+    size: Math.random() * 1.5 + 0.5
+}));
+
+function animate() {
+    ctx.clearRect(0, 0, w, h);
+    
+    particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        
+        // Отскок от краев
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        
+        // Реакция на мышь/палец
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(124, 58, 237, ${1 - dist/150})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fill();
+    });
+    
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
